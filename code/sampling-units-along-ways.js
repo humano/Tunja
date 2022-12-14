@@ -6,7 +6,7 @@ const Vias = JSON.parse(
 );
 
 const WaysSegments = turf.flatten(Vias);
-const SmpDistance = 0.05; //50m expressed in km
+const SmpDistance = 0.1; //100m expressed in km
 
 let smpUnits = turf.featureCollection([]);
 turf.featureEach(WaysSegments, function (currentFeature, featureIndex) {
@@ -17,11 +17,11 @@ turf.featureEach(WaysSegments, function (currentFeature, featureIndex) {
     let smpUnit = turf.circle(center, SmpDistance / 2, {
       steps: 10,
       units: "kilometers",
-      properties: {
-        line: featureIndex + 1,
-        index: i + 1,
-        count: 0,
-      },
+      // properties: {
+      //   line: featureIndex + 1,
+      //   index: i + 1,
+      //   count: 0,
+      // },
     });
     smpUnits.features.push(turf.truncate(smpUnit));
   }
@@ -52,8 +52,9 @@ while (smpUnits.features.length > 0) {
     if (sharingShape) {
       let sharingArea = turf.area(sharingShape);
       if (
-        sharingArea > smpArea * 0.5 &&
-        CloserThanN(unitToMergeWith, currentUnit, 10)
+        // sharingArea > smpArea * 0.5 &&
+        // CloserThanN(unitToMergeWith, currentUnit, 10)
+        sharingArea > smpArea * 0.5
       ) {
         unitsToBeMerged.push(currentUnit);
         smpUnits.features.splice(index, 1);
@@ -70,17 +71,16 @@ while (smpUnits.features.length > 0) {
       {
         steps: 10,
         units: "kilometers",
-        properties: {
-          line: unitsToBeMerged[0].properties.line,
-          index: unitsToBeMerged[0].properties.index,
-          count: 0,
-        },
+        // properties: {
+        //   line: unitsToBeMerged[0].properties.line,
+        //   index: unitsToBeMerged[0].properties.index,
+        //   count: 0,
+        // },
       }
     );
     mergedUnit = turf.truncate(mergedUnit);
   }
   optmUnits.features.push(mergedUnit);
-  // console.log(mergedUnit.properties.index);
 }
 console.log("%s Optimized Units", optmUnits.features.length);
 
