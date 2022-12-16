@@ -6,7 +6,8 @@ const Vias = JSON.parse(
 );
 
 const WaysSegments = turf.flatten(Vias);
-const SmpDistance = 0.1; //100m expressed in km
+const SmpDistance = 0.075; //expressed in km
+const SmpRadius = 0.05;
 
 let smpUnits = turf.featureCollection([]);
 turf.featureEach(WaysSegments, function (currentFeature, featureIndex) {
@@ -14,7 +15,7 @@ turf.featureEach(WaysSegments, function (currentFeature, featureIndex) {
 	let smpUnitsCount = Math.round(length / SmpDistance);
 	for (var i = 0; i <= smpUnitsCount; i++) {
 		let center = turf.along(currentFeature, SmpDistance * i);
-		let smpUnit = turf.circle(center, SmpDistance / 2, {
+		let smpUnit = turf.circle(center, SmpRadius, {
 			steps: 10,
 			units: "kilometers",
 			// properties: {
@@ -53,7 +54,7 @@ while (smpUnits.features.length > 0) {
 			let sharingArea = turf.area(sharingShape);
 			if (
 				// sharingArea > smpArea * 0.5 &&
-				// CloserThanN(unitToMergeWith, currentUnit, 10)
+				// CloserThanN(unitToMergeWith, currentUnit, 1)
 				sharingArea > smpArea * 0.5
 			) {
 				unitsToBeMerged.push(currentUnit);
@@ -65,19 +66,20 @@ while (smpUnits.features.length > 0) {
 		mergedUnit = unitsToBeMerged[0];
 	} else {
 		mergedUnit = turf.circle(
-			turf.centerOfMass(turf.featureCollection([...unitsToBeMerged])).geometry
-				.coordinates,
-			SmpDistance / 2,
-			{
-				steps: 10,
-				units: "kilometers",
-				// properties: {
-				//   line: unitsToBeMerged[0].properties.line,
-				//   index: unitsToBeMerged[0].properties.index,
-				//   count: 0,
-				// },
-			}
-		);
+      // turf.centerOfMass(turf.featureCollection([...unitsToBeMerged])).geometry
+      turf.center(turf.featureCollection([...unitsToBeMerged])).geometry
+        .coordinates,
+      SmpRadius,
+      {
+        steps: 10,
+        units: "kilometers",
+        // properties: {
+        //   line: unitsToBeMerged[0].properties.line,
+        //   index: unitsToBeMerged[0].properties.index,
+        //   count: 0,
+        // },
+      }
+    );
 		mergedUnit = turf.truncate(mergedUnit);
 	}
 	optmUnits.features.push(mergedUnit);
