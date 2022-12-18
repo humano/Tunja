@@ -128,3 +128,8 @@ console.log(
   "histogram:",
   stats.histogram(su.features.map((a) => a.properties.weight, 10))
 );
+
+fs.writeFileSync(
+  "../output/weighted-sampling-units.geojson",
+  JSON.stringify(turf.truncate(su))
+);
