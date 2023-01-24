@@ -74,5 +74,5 @@ converter.json2csv(
   }
 );
 
-fs.writeFileSync("../output/names.geojson", JSON.stringify(names));
-fs.writeFileSync("../output/p-names.geojson", JSON.stringify(p_names));
+fs.writeFileSync("../output/names.json", JSON.stringify(names));
+fs.writeFileSync("../output/p-names.json", JSON.stringify(p_names));
