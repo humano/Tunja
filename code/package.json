@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@turf/turf": "^6.5.0",
+    "array-sort": "^1.0.0",
+    "json-2-csv": "^3.18.0",
     "statistical-methods": "^1.0.4",
     "stats-lite": "^2.2.0"
   }
