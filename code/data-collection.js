@@ -156,6 +156,7 @@ turf.featureEach(su_single_name, function (currentSamplingUnit) {
   turf.featureEach(flatVias, function (currentVia) {
     if (turf.booleanIntersects(currentSamplingUnit, currentVia))
       currentSamplingUnit.properties.osm_id = currentVia.properties.osm_id;
+      currentSamplingUnit.properties.name = currentVia.properties.name;
   })
 })
 
