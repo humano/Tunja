@@ -1,7 +1,7 @@
 const fs = require("fs");
 const turf = require("@turf/turf");
 const sm = require("statistical-methods");
-const stats = require("stats-lite");
+// const stats = require("stats-lite");
 
 const Pts = JSON.parse(
   fs.readFileSync("../data/Ptos_Vereda_Trasdelalto.geojson")
@@ -11,6 +11,9 @@ const CNPV = JSON.parse(
 );
 const NRP = JSON.parse(
   fs.readFileSync("../data/NRP_Vereda_Trasdelalto.geojson")
+);
+const Vias = JSON.parse(
+  fs.readFileSync("../data/Vias_Vereda_Trasdelalto.geojson")
 );
 const SU = JSON.parse(fs.readFileSync("../output/sampling-units.geojson"));
 
@@ -25,7 +28,7 @@ Pts.features.map((a) => {
     dir = dir.replace(" VDA LA ESPERANZA", "");
   } else {
     dir = "";
-  };
+  }
   a.properties.DIRECC_NOR = dir;
   // console.log(a.properties.DIRECC_NOR);
 });
@@ -65,7 +68,7 @@ var pts = turf.tag(pts, nrp, "viviendas", "viviendas");
 var su = turf.collect(SU, pts, "personas", "personas");
 var su = turf.collect(SU, pts, "hogares", "hogares");
 var su = turf.collect(SU, pts, "viviendas", "viviendas");
-var su = turf.collect(SU, pts, "COD_MPIO", "mpio");
+// var su = turf.collect(SU, pts, "COD_MPIO", "mpio");
 var su = turf.collect(SU, pts, "AREA_M2", "area");
 var su = turf.collect(SU, pts, "DIRECC_NOR", "dir");
 var su = turf.collect(SU, pts, "fid", "fid");
@@ -124,12 +127,39 @@ su.features.map((a) => {
   a.properties.weight = +((pplNorm + areaNorm + addrsNorm) / 3).toFixed(dec);
 });
 
-console.log(
-  "histogram:",
-  stats.histogram(su.features.map((a) => a.properties.weight, 10))
-);
+// console.log(
+//   "histogram:",
+//   stats.histogram(su.features.map((a) => a.properties.weight, 10))
+// );
+
+var su_single_name = turf.featureCollection([]);
+turf.featureEach(su, function (currentFeature, featureIndex) {
+  var dir = currentFeature.properties.dir;
+  if (Array.isArray(dir)) {
+    dir.forEach(function (item) {
+      if (item.length > 5) {
+        tempFeature = currentFeature;
+        tempFeature.properties.dir = item;
+        su_single_name.features.push(tempFeature);
+      }
+    });
+  } else {
+    su_single_name.features.push(currentFeature);
+  }
+});
+
+console.log(su.features.length);
+console.log(su_single_name.features.length);
+
+const flatVias = turf.flatten(Vias);
+turf.featureEach(su_single_name, function (currentSamplingUnit) {
+  turf.featureEach(flatVias, function (currentVia) {
+    if (turf.booleanIntersects(currentSamplingUnit, currentVia))
+      currentSamplingUnit.properties.osm_id = currentVia.properties.osm_id;
+  })
+})
 
 fs.writeFileSync(
-  "../output/weighted-sampling-units.geojson",
-  JSON.stringify(turf.truncate(su))
+  "../output/weighted-named-sampling-units.geojson",
+  JSON.stringify(turf.truncate(su_single_name))
 );
