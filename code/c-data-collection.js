@@ -38,6 +38,7 @@ Cons.features.map((a) => {
     dir = dir.replace(" VDA TRAS", "");
     dir = dir.replace(" VDA TARS DEL ALTO", "");
     dir = dir.replace(" VDA LA ESPERANZA", "");
+    dir = dir.replace(" VDA LA ESPERANZ", "");
     dir = dir.replace(" VDA CENTRO RURAL", "");
   } else {
     dir = "";
