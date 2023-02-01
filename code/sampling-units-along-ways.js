@@ -16,14 +16,12 @@ turf.featureEach(WaysSegments, function (currentFeature, featureIndex) {
 	for (var i = 0; i <= smpUnitsCount; i++) {
 		let center = turf.along(currentFeature, SmpDistance * i);
 		let smpUnit = turf.circle(center, SmpRadius, {
-			steps: 10,
-			units: "kilometers",
-			// properties: {
-			//   line: featureIndex + 1,
-			//   index: i + 1,
-			//   count: 0,
-			// },
-		});
+      steps: 10,
+      units: "kilometers",
+      properties: {
+        way: currentFeature.properties.osm_id,
+      },
+    });
 		smpUnits.features.push(turf.truncate(smpUnit));
 	}
 });
