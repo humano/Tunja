@@ -77,6 +77,10 @@ var pts = turf.tag(pts, nrp, "viviendas", "viviendas");
 var pts = turf.tag(pts, nrp, "area", "area");
 
 // console.dir(pts, { depth: null });
+fs.writeFileSync(
+  "../output/consolidated-points.geojson",
+  JSON.stringify(turf.truncate(Cons))
+);
 
 /**
  * Adding data to the Sampling Units
@@ -169,17 +173,16 @@ turf.featureEach(su, function (currentFeature, featureIndex) {
 console.log(su.features.length);
 console.log(su_single_name.features.length);
 
-const flatVias = turf.flatten(Vias);
-turf.featureEach(su_single_name, function (currentSamplingUnit) {
-  turf.featureEach(flatVias, function (currentVia) {
-    if (turf.booleanIntersects(currentSamplingUnit, currentVia))
-      currentSamplingUnit.properties.osm_id = currentVia.properties.osm_id;
-      currentSamplingUnit.properties.name = currentVia.properties.name;
-  })
-})
+// const flatVias = turf.flatten(Vias);
+// turf.featureEach(su_single_name, function (currentSamplingUnit) {
+//   turf.featureEach(flatVias, function (currentVia) {
+//     if (turf.booleanIntersects(currentSamplingUnit, currentVia))
+//       currentSamplingUnit.properties.osm_id = currentVia.properties.osm_id;
+//       currentSamplingUnit.properties.name = currentVia.properties.name;
+//   })
+// })
 
 fs.writeFileSync(
   "../output/consolidated-sampling-units.geojson",
   JSON.stringify(turf.truncate(su_single_name))
 );
-
