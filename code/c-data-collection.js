@@ -24,7 +24,7 @@ const SU = JSON.parse(fs.readFileSync("../output/sampling-units.geojson"));
  * Filter Consolidado features where VEREDA_V1 = "TRAS DEL ALTO" || VEREDA_V2 = "TRAS DEL ALTO"
  */
 
-Cons.features = Cons.features.filter((a)=>(a.properties.VEREDA_V1 == "TRAS DEL ALTO" || a.properties.VEREDA_V2 == "TRAS DEL ALTO"));
+Cons.features = Cons.features.filter((a)=>(a.properties.VEREDA_V1 == "TRAS DEL ALTO" && a.properties.VEREDA_V2 == "TRAS DEL ALTO"));
 
 // console.dir(Cons, { depth: null });
 console.log(Cons.features.length);

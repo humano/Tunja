@@ -1,10 +1,6 @@
 /**
- * Proposed Addresses
- * Asign a p_address to each point (gate)
- * way -> proposed name of the road/way based on weight
- * address -> address
- * d -> distance in m from the start of the road/way
- * p_address = way + address + d
+ * Nearest Point
+ * 
  */
 
 const fs = require("fs");
@@ -22,13 +18,14 @@ const Vias = JSON.parse(
 );
 const vias = turf.flatten(Vias);
 
-var pts = turf.tag(Pts, SU, "way", "way");
+// var pts = turf.tag(Pts, SU, "way", "way");
 
 pts.features.map((a) => {
   let osm_id = a.properties.way;
   let way = Names[osm_id] || "";
   let address = a.properties.direccion_ || "";
-  let line = vias.features.filter((f) => f.properties.osm_id == osm_id)[0];
+  // let line = vias.features.filter((f) => f.properties.osm_id == osm_id)[0];
+  let line = vias;
   if (line) {
     let pt = a.geometry;
     // let start = turf.along(line.geometry, 0);
@@ -48,7 +45,7 @@ pts.features.map((a) => {
 
 console.dir(pts, { depth: null });
 
-fs.writeFileSync(
-  "../output/p-addresses.geojson",
-  JSON.stringify(turf.truncate(pts))
-);
+// fs.writeFileSync(
+//   "../output/p-addresses.geojson",
+//   JSON.stringify(turf.truncate(pts))
+// );
