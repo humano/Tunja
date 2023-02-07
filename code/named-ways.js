@@ -17,7 +17,7 @@ const Vias = JSON.parse(
 Vias.features.map((a) => {
   let osm_id = a.properties.osm_id;
   let p_name = Names[osm_id] || "";
-  a.p_name = p_name;
+  a.properties.p_name = p_name;
 });
 
 console.dir(Vias, { depth: null });
