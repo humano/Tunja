@@ -6,12 +6,9 @@
 const fs = require("fs");
 const turf = require("@turf/turf");
 
-const Names = JSON.parse(
-  fs.readFileSync("../output/p-consolidated-names.json")
-);
-const Vias = JSON.parse(
-  fs.readFileSync("../data/Vias_Vereda_Trasdelalto.geojson")
-);
+const Names = JSON.parse(fs.readFileSync("../output/proposed-road-names.json"));
+const Vias = JSON.parse(fs.readFileSync("../data/Vias_rurales_Tunja.geojson"));
+
 // const vias = turf.flatten(Vias);
 
 Vias.features.map((a) => {
@@ -23,6 +20,6 @@ Vias.features.map((a) => {
 console.dir(Vias, { depth: null });
 
 fs.writeFileSync(
-  "../output/p-names-ways.geojson",
+  "../output/roads-with-proposed-names.geojson",
   JSON.stringify(turf.truncate(Vias))
 );

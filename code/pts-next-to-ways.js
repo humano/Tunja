@@ -1,12 +1,8 @@
 const fs = require("fs");
 const turf = require("@turf/turf");
 
-const Pts = JSON.parse(
-  fs.readFileSync("../data/Ptos_Vereda_Trasdelalto.geojson")
-);
-const Vias = JSON.parse(
-  fs.readFileSync("../data/Vias_Vereda_Trasdelalto.geojson")
-);
+const Pts = JSON.parse(fs.readFileSync("../data/../data/tunjafinal.geojson"));
+const Vias = JSON.parse(fs.readFileSync("../data/Vias_rurales_Tunja.geojson"));
 
 var combined = turf.combine(Vias);
 
