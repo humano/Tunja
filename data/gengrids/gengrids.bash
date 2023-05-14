@@ -27,7 +27,7 @@ psql $pguri < table_grids.sql
 
 # Create shapefile for base coverage
 file_basename='tunjacover0'
-if pgsql2shp -k -f ${file_basename}.shp -h ${pghost} -u ${pguser} -P ${pgpass} ${pgdb} "SELECT gid, jurisd_base_id, isolabel_ext, kx_prefix, cindex, geom FROM gridstunja.cover0;"
+if pgsql2shp -k -f ${file_basename}.shp -h ${pghost} -u ${pguser} -P ${pgpass} ${pgdb} "SELECT gid, 15001 AS divipola, cindex AS code, geom FROM gridstunja.cover0;"
 then
   mkdir ${file_basename}
   mv ${file_basename}.{shp,cpg,dbf,prj,shx} ${file_basename}
@@ -39,7 +39,7 @@ fi
 for i in $(seq 1 1 4)
 do
     file_basename='tunjacover'${i}
-    if pgsql2shp -k -f ${file_basename}.shp -h ${pghost} -u ${pguser} -P ${pgpass} ${pgdb} "SELECT gid, jurisd_base_id, isolabel_ext, code, prefix, suffix, geom  FROM gridstunja.cover${i};"
+    if pgsql2shp -k -f ${file_basename}.shp -h ${pghost} -u ${pguser} -P ${pgpass} ${pgdb} "SELECT gid, 15001 AS divipola, code, geom  FROM gridstunja.cover${i};"
     then
       mkdir ${file_basename}
       mv ${file_basename}.{shp,cpg,dbf,prj,shx} ${file_basename}
