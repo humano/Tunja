@@ -14,7 +14,7 @@ const cleanName = (name) => name.split(" VDA ")[0].trim();
 addresses = "";
 
 Points.features.map((a, index) => {
-  let code = a.properties.codigo;
+  let code = a.properties.door_number;
   let vereda = a.properties.vereda;
   let address = a.properties.direccion_;
   let main_road = Names[a.properties.main_road] || "";

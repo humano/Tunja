@@ -11,22 +11,22 @@ const NRP = JSON.parse(fs.readFileSync("../data/NRP_Tunja_Rural.geojson"));
 const CNPV = JSON.parse(fs.readFileSync("../data/CNPV_Tunja_Rural.geojson"));
 const Vias = JSON.parse(fs.readFileSync("../data/Vias_rurales_Tunja.geojson"));
 const Veredas = JSON.parse(fs.readFileSync("../data/Veredas_Tunja.geojson"));
-const Pts = JSON.parse(fs.readFileSync("../data/tunjafinal.geojson"));
+// const Pts = JSON.parse(fs.readFileSync("../data/tunjafinal.geojson"));
+const Pts = JSON.parse(fs.readFileSync("../data/tunjafinal_osmcode.geojson"));
 
 // "properties": { "OBJECTID_1": 1, "OBJECTID": 828, "COD_MPIO": "15001", "X_LONG": -73.310858452155799, "Y_LAT": 5.5678753933347593, "direccion_": "EL ARRAYAN VDA PIRGUA", "DIRECC_NOR": " ", "VEREDA_V2": "PIRGUA", "codigo": "150010001000000021045000000000", "codigo_ant": "15001000100021045000", "Criterio_ubicacion": "Acceso ubicado en vía" },
 Pts.features.map((a) => {
-  delete a.properties.OBJECTID_1;
-  delete a.properties.OBJECTID;
-  delete a.properties.COD_MPIO;
-  delete a.properties.X_LONG;
-  delete a.properties.Y_LAT;
-  delete a.properties.DIRECC_NOR;
-  delete a.properties.VEREDA_V2;
-  a.properties.codigo = a.properties.codigo_ant.substring(12, 17);
+  // delete a.properties.OBJECTID_1;
+  // delete a.properties.OBJECTID;
+  // delete a.properties.COD_MPIO;
+  // delete a.properties.X_LONG;
+  // delete a.properties.DIRECC_NOR;
+  // delete a.properties.VEREDA_V2;
+  a.properties.door_number = a.properties.codigo_ant.substring(12, 17);
   a.properties.main_road = "";
   a.properties.secondary_road = "";
   // console.log(a.properties.codigo_ant + " - " + a.properties.codigo);
-  delete a.properties.codigo_ant;
+  // delete a.properties.codigo_ant;
 });
 
 var pts = turf.truncate(Pts);
